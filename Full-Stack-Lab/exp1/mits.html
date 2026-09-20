@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITS - Excellence in Education</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1e40af;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #dc2626;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0;
+            align-items: center;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links > li > a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .nav-links > li > a:hover {
+            color: #1e40af;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fff;
+            min-width: 220px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 6px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links > li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown li {
+            list-style: none;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.6rem 1.2rem;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .dropdown a:hover {
+            background: #f0f4ff;
+            color: #1e40af;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 0.4rem 1rem;
+        }
+
+        .hero {
+            background: url('mits.png') center/cover no-repeat;
+            color: #fff;
+            padding: 150px 2rem 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 64, 175, 0.45);
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: #fff;
+            color: #1e40af;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        section {
+            padding: 80px 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #1e40af;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+
+        .about-section {
+            background: #f8fafc;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .programs {
+            background: #fff;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #1e40af;
+            transition: transform 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateX(5px);
+        }
+
+        .program-card h3 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .program-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .contact-section {
+            background: #1e40af;
+            color: #fff;
+        }
+
+        .contact-section .section-title {
+            color: #fff;
+        }
+
+        .contact-section .section-subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: 2px solid #60a5fa;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #fff;
+            color: #1e40af;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            background: #0f172a;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <img src="image.png" alt="MITS Logo" style="height: 40px; width: auto;">
+            <div class="logo">MIT<span>S</span></div>
+        </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li>
+                    <a href="#about">About ▾</a>
+                    <ul class="dropdown">
+                        <li><a href="#about">About MITS</a></li>
+                        <li><a href="#about">Vision & Mission</a></li>
+                        <li><a href="#about">Leadership</a></li>
+                        <li><a href="#about">Accreditation</a></li>
+                        <li><a href="#about">Approvals & Disclosure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="#about">Policies</a></li>
+                        <li><a href="#about">Service Rules</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#programs">Programs ▾</a>
+                    <ul class="dropdown">
+                        <li><a href="#programs">Engineering</a></li>
+                        <li><a href="#programs">Business Studies</a></li>
+                        <li><a href="#programs">Science & Technology</a></li>
+                        <li><a href="#programs">Computer Applications</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="#programs">Architecture</a></li>
+                        <li><a href="#programs">Humanities & Management</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#features">Features ▾</a>
+                    <ul class="dropdown">
+                        <li><a href="#features">Quality Education</a></li>
+                        <li><a href="#features">Modern Labs</a></li>
+                        <li><a href="#features">Career Support</a></li>
+                        <li><a href="#features">Global Exposure</a></li>
+                        <li><a href="#features">Excellence</a></li>
+                        <li><a href="#features">Community</a></li>
+                    </ul>
+                </li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>MITS</h1>
+            <p>Excellence in Education • Innovation in Learning • Success in Life</p>
+            <a href="#programs" class="cta-button">Explore Programs</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About MITS</h2>
+                    <p>MITS is a premier institution dedicated to providing world-class education and fostering innovation. We empower students with knowledge, skills, and values to excel in their careers and make a positive impact on society.</p>
+                    <p>With state-of-the-art infrastructure and experienced faculty, we create an environment where students thrive academically and personally.</p>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Students</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Faculty</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Programs</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Placement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose MITS</h2>
+            <p class="section-subtitle">Discover what makes us different</p>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">EDUCATION</div>
+                    <h3>Quality Education</h3>
+                    <p>Industry-relevant curriculum designed with input from leading professionals and academics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">LABS</div>
+                    <h3>Modern Labs</h3>
+                    <p>State-of-the-art laboratories and equipment for hands-on learning experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">CAREER</div>
+                    <h3>Career Support</h3>
+                    <p>Dedicated placement cell with strong industry connections and 95% placement record.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">GLOBAL</div>
+                    <h3>Global Exposure</h3>
+                    <p>International collaborations and exchange programs for broader perspectives.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">EXCELLENCE</div>
+                    <h3>Excellence</h3>
+                    <p>Consistent academic excellence with numerous awards and recognitions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">COMMUNITY</div>
+                    <h3>Community</h3>
+                    <p>Vibrant campus life with diverse clubs, events, and student organizations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="programs" class="programs">
+        <div class="container">
+            <h2 class="section-title">Our Programs</h2>
+            <p class="section-subtitle">Wide range of courses to match your passion</p>
+            <div class="program-grid">
+                <div class="program-card">
+                    <h3>Engineering</h3>
+                    <p>B.Tech programs in CSE, ECE, Mechanical, Civil, and more with modern curriculum.</p>
+                </div>
+                <div class="program-card">
+                    <h3>Business Studies</h3>
+                    <p>MBA and BBA programs focusing on leadership, management, and entrepreneurship.</p>
+                </div>
+                <div class="program-card">
+                    <h3>Science & Technology</h3>
+                    <p>B.Sc and M.Sc programs in various disciplines with research opportunities.</p>
+                </div>
+                <div class="program-card">
+                    <h3>Computer Applications</h3>
+                    <p>MCA and BCA programs with focus on software development and emerging technologies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">We'd love to hear from you</p>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message!');">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; This Page Is Made by Ayush Gupta</p>
+    </footer>
+</body>
+</html>

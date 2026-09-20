@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz & Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">⚡</span>
+            <span class="brand-text">QuizMaster</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-section="quiz">🎯 Quiz</button>
+            <button class="nav-btn" data-section="leaderboard">🏆 Leaderboard</button>
+            <button class="nav-btn" data-section="weather">🌤️ Weather</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Quiz Section -->
+        <section id="quiz-section" class="section active">
+            <div class="quiz-setup" id="quizSetup">
+                <div class="card">
+                    <h2>🎯 Challenge Yourself</h2>
+                    <p class="subtitle">Test your knowledge with our timed quiz!</p>
+                    <div class="form-group">
+                        <label>Enter Your Name</label>
+                        <input type="text" id="playerName" placeholder="Your name here..." maxlength="20">
+                    </div>
+                    <div class="quiz-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">10</span>
+                            <span class="stat-label">Questions</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15s</span>
+                            <span class="stat-label">Per Question</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Max Score</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="startQuizBtn">Start Quiz</button>
+                </div>
+            </div>
+
+            <div class="quiz-active hidden" id="quizActive">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <span class="quiz-label">Question</span>
+                        <span class="quiz-counter"><span id="currentQ">1</span> / <span id="totalQ">10</span></span>
+                    </div>
+                    <div class="timer-container">
+                        <svg class="timer-ring" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="timer-progress" id="timerCircle" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <span class="timer-text" id="timerText">15</span>
+                    </div>
+                </div>
+                <div class="card quiz-card">
+                    <h3 class="question-text" id="questionText">Question goes here?</h3>
+                    <div class="options-grid" id="optionsGrid"></div>
+                </div>
+                <div class="quiz-footer">
+                    <div class="score-display">
+                        Score: <span id="liveScore">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-result hidden" id="quizResult">
+                <div class="result-card">
+                    <div class="result-emoji" id="resultEmoji">🏆</div>
+                    <h2>Quiz Complete!</h2>
+                    <div class="result-stats">
+                        <div class="result-item">
+                            <span class="result-label">Score</span>
+                            <span class="result-value" id="finalScore">0/10</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Time</span>
+                            <span class="result-value" id="finalTime">0s</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Accuracy</span>
+                            <span class="result-value" id="finalAccuracy">0%</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn-primary" id="playAgainBtn">Play Again</button>
+                        <button class="btn-secondary" id="viewLeaderboardBtn">View Leaderboard</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard-section" class="section">
+            <div class="leaderboard-container">
+                <div class="card">
+                    <h2>🏆 Top Players</h2>
+                    <p class="subtitle">See who's leading the charts!</p>
+                    <div class="leaderboard-table">
+                        <div class="table-header">
+                            <span>Rank</span>
+                            <span>Player</span>
+                            <span>Score</span>
+                            <span>Time</span>
+                            <span>Date</span>
+                        </div>
+                        <div id="leaderboardList">
+                            <div class="loading">Loading leaderboard...</div>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" id="refreshLeaderboard">Refresh</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weather Section -->
+        <section id="weather-section" class="section">
+            <div class="weather-container">
+                <div class="weather-search card">
+                    <h2>🌤️ Weather Dashboard</h2>
+                    <div class="search-box">
+                        <input type="text" id="cityInput" placeholder="Enter city name..." value="Mumbai">
+                        <button class="btn-primary" id="searchWeatherBtn">Search</button>
+                    </div>
+                </div>
+
+                <div class="weather-content hidden" id="weatherContent">
+                    <div class="weather-main card">
+                        <div class="weather-header">
+                            <div>
+                                <h3 id="weatherCity">City, Country</h3>
+                                <p class="weather-desc" id="weatherDesc">Clear sky</p>
+                            </div>
+                            <div class="weather-icon" id="weatherIcon">☀️</div>
+                        </div>
+                        <div class="weather-temp">
+                            <span id="weatherTemp">25°C</span>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <span class="detail-label">Feels Like</span>
+                                <span class="detail-value" id="weatherFeels">27°C</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-label">Humidity</span>
+                                <span class="detail-value" id="weatherHumidity">60%</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-label">Wind</span>
+                                <span class="detail-value" id="weatherWind">12 km/h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weather-ai card">
+                        <h3>🤖 AI Weather Insights</h3>
+                        <div class="ai-chat" id="aiChat">
+                            <div class="ai-message">
+                                <span class="ai-avatar">🤖</span>
+                                <p>Ask me anything about the weather!</p>
+                            </div>
+                        </div>
+                        <div class="ai-input-group">
+                            <input type="text" id="aiInput" placeholder="Ask about weather tips...">
+                            <button class="btn-primary" id="aiSendBtn">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weather-error hidden" id="weatherError">
+                    <div class="error-card">
+                        <span class="error-icon">⚠️</span>
+                        <p id="errorMessage">City not found</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
